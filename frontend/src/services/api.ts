@@ -2,13 +2,14 @@ import axios from 'axios';
 import type { SessionStartResponse } from '../types';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8000';
-const API_KEY      = import.meta.env.VITE_API_KEY ?? 'dev-secret-api-key';
+const API_KEY = import.meta.env.VITE_API_KEY ?? 'dev-secret-api-key';
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
-    'X-API-Key':    API_KEY,
+    'X-API-Key': API_KEY,
+    'ngrok-skip-browser-warning': 'true'
   },
   timeout: 15_000,
 });
