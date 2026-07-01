@@ -1,12 +1,22 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TutorialModal from '../components/TutorialModal';
+import { useAuth } from '../context/AuthContext';
 
 export default function LandingPage() {
   const navigate = useNavigate();
+  const { user, signOut, isLoading } = useAuth();
   const [showTutorial, setShowTutorial] = useState(false);
 
-  const handleDetect = () => setShowTutorial(true);
+  const handleDetect = () => {
+    if (!user) {
+      // Not logged in → go to login, then come back to /measure
+      navigate('/login', { state: { from: { pathname: '/measure' } } });
+      return;
+    }
+    // Logged in → show tutorial as usual
+    setShowTutorial(true);
+  };
 
   const handleUnderstand = () => {
     setShowTutorial(false);
@@ -24,6 +34,30 @@ export default function LandingPage() {
         <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-purple-600/15 rounded-full blur-3xl animate-pulse-slow" style={{ animationDelay: '1.5s' }} />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-brand-500/5 rounded-full blur-3xl" />
       </div>
+
+      {/* User indicator — top-right corner */}
+      {!isLoading && user && (
+        <div className="absolute top-4 right-4 z-20 flex items-center gap-2">
+          <span className="text-xs text-white/40 font-mono hidden sm:block max-w-[180px] truncate">
+            {user.email}
+          </span>
+          <button
+            id="logout-button"
+            onClick={signOut}
+            aria-label="Logout"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium
+                       text-white/50 border border-white/10 bg-white/5 backdrop-blur-sm
+                       hover:bg-white/10 hover:text-white/80 hover:border-white/20
+                       transition-all duration-200"
+          >
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round"
+                d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15" />
+            </svg>
+            Logout
+          </button>
+        </div>
+      )}
 
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center text-center max-w-lg w-full animate-slide-up">
@@ -43,7 +77,7 @@ export default function LandingPage() {
           HeightScan
         </h1>
         <p className="text-lg sm:text-xl text-white/60 mb-3 font-light leading-relaxed">
-          Instant & accurate height measurement
+          Instant &amp; accurate height measurement
           <br />
           powered by IoT ultrasonic sensing.
         </p>
@@ -66,6 +100,13 @@ export default function LandingPage() {
             Detect
           </span>
         </button>
+
+        {/* Auth hint when not logged in */}
+        {!isLoading && !user && (
+          <p className="mt-4 text-xs text-white/25">
+            Login diperlukan untuk memulai pengukuran
+          </p>
+        )}
 
         {/* Features row */}
         <div className="mt-16 grid grid-cols-3 gap-4 w-full max-w-sm">

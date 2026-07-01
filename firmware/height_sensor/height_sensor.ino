@@ -171,7 +171,7 @@ bool postResult(const String& sessionId, float heightCm, float distanceCm) {
   char endpoint[128];
   snprintf(endpoint, sizeof(endpoint), ENDPOINT_RESULT, sessionId.c_str());
 
-  String url = String("http://") + BACKEND_HOST + ":" + BACKEND_PORT + endpoint;
+  String url = String("http://") + BACKEND_HOST + ":" + String(BACKEND_PORT) + endpoint;
   Serial.printf("[HTTP] POST %s\n", url.c_str());
 
   // Build JSON payload

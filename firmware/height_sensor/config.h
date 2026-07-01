@@ -3,14 +3,14 @@
 // ============================================================
 // WiFi Configuration
 // ============================================================
-#define WIFI_SSID       "NAMA_WIFI_KAMU"      // ← Ganti dengan nama WiFi kamu
-#define WIFI_PASSWORD   "PASSWORD_WIFI_KAMU"   // ← Ganti dengan password WiFi
+#define WIFI_SSID       "terdapat"         // ← Nama WiFi kamu
+#define WIFI_PASSWORD   "Iloveindomi3"     // ← Password WiFi
 #define WIFI_TIMEOUT_MS 20000
 
 // ============================================================
 // Backend Configuration
 // ============================================================
-#define BACKEND_HOST    "192.168.1.13"   // ← IP PC kamu (hasil ipconfig)
+#define BACKEND_HOST    "192.168.1.17"   // ← IP PC kamu di jaringan lokal (hasil ipconfig)
 #define BACKEND_PORT    8000
 #define BACKEND_API_KEY "dev-secret-api-key"
 
@@ -33,11 +33,11 @@
 // Physical Setup
 // ============================================================
 // Distance from sensor to floor (adjust to your installation)
-#define REFERENCE_HEIGHT_CM     250.0f
+#define REFERENCE_HEIGHT_CM     200.0f
 
 // Validation range for reported height
 #define MIN_VALID_HEIGHT_CM     50.0f
-#define MAX_VALID_HEIGHT_CM     250.0f
+#define MAX_VALID_HEIGHT_CM     200.0f
 
 // ============================================================
 // LED Indicators

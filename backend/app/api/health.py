@@ -7,10 +7,12 @@ from datetime import datetime
 from fastapi import APIRouter
 
 from app.core.config import settings
-from app.schemas.session import HealthResponse
+from app.schemas.session import HealthResponse, HealthResponseIoT
+from app.services.esp32_client import ESP32Client
 
 router = APIRouter(prefix="/api", tags=["health"])
 
+esp32_client = ESP32Client()
 
 @router.get(
     "/health",
@@ -25,3 +27,19 @@ async def health_check() -> HealthResponse:
         version=settings.app_version,
         timestamp=datetime.utcnow().isoformat(),
     )
+
+
+@router.get(
+    "/health-iot",
+    response_model=HealthResponseIoT,
+    summary="Health check",
+)
+async def health_iot_check() -> HealthResponseIoT:
+    """Return application health status."""
+
+    res = await esp32_client.health_check()
+
+    return HealthResponseIoT(
+        response=res
+    )
+

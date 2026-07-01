@@ -3,10 +3,12 @@
 from __future__ import annotations
 
 import logging
+from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
 from app.core.security import verify_api_key
+from app.core.supabase_auth import get_current_user
 from app.models.session import SessionStatus
 from app.schemas.session import (
     SensorResultRequest,
@@ -31,6 +33,7 @@ router = APIRouter(prefix="/api/sessions", tags=["sessions"])
 )
 async def start_session(
     _api_key: str = Depends(verify_api_key),
+    _user: dict[str, Any] = Depends(get_current_user),
 ) -> SessionStartResponse:
     """
     Create a new measurement session, then trigger the ESP32 to start measuring.
@@ -138,6 +141,7 @@ async def receive_result(
 async def get_session_status(
     session_id: str,
     _api_key: str = Depends(verify_api_key),
+    _user: dict[str, Any] = Depends(get_current_user),
 ) -> SessionStatusResponse:
     """Retrieve the current state of a session (used for reconnection recovery)."""
     session = await session_manager.get_session(session_id)

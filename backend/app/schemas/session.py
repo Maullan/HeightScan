@@ -75,3 +75,7 @@ class HealthResponse(BaseModel):
     app_name: str
     version: str
     timestamp: str
+
+class HealthResponseIoT(BaseModel):
+    """Health-check response."""
+    response: str

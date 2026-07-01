@@ -24,6 +24,18 @@ class ESP32Client:
         self._base_url = settings.esp32_url.rstrip("/")
         self._timeout = settings.esp32_trigger_timeout
 
+    async def health_check(self):
+        url = f"{self._base_url}/health"
+        try:
+            async with httpx.AsyncClient(timeout=self._timeout) as client:
+                response = await client.get(url)
+                print(response.text)
+                response.raise_for_status()
+                return response.text
+        except Exception:
+            logger.exception("Unexpected error triggering ESP32")
+            return "Ga jalan"
+
     async def trigger_measurement(self, session_id: str) -> bool:
         """
         Send a trigger command to the ESP32.

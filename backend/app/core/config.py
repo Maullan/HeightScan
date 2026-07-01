@@ -59,6 +59,11 @@ class Settings(BaseSettings):
     # Rate limiting
     rate_limit_per_minute: int = 100
 
+    # Supabase — for verifying user tokens via Auth server
+    # JWT secret is no longer needed — we verify via the Auth API instead
+    supabase_url: str = ""
+    supabase_anon_key: str = ""  # anon/publishable key, used as apikey header
 
-# Singleton instance
+
+# Singleton instance — loaded fresh on every uvicorn reload
 settings = Settings()
